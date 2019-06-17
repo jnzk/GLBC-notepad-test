@@ -21,11 +21,10 @@ public class NotePadChromeTests
 
         np = new NotePad(driver);
     }
-
-    @Test
-
+    
     //Testing the possibility of creating a folder for registered user.
 
+    @Test
     public void aNotepadInChromeTest()
     {
         np.open();
