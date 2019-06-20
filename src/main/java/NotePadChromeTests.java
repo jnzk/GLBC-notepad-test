@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+
 public class NotePadChromeTests
 {
 
@@ -17,7 +18,6 @@ public class NotePadChromeTests
     {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-
         np = new NotePad(driver);
     }
 
@@ -26,16 +26,12 @@ public class NotePadChromeTests
     @Test
     public void aNotepadInChromeTest()
     {
-        np.open();
-        np.openLoginPage();
-        np.setLogin("testtesttest@gmail.com");
-        np.setPassword("Test1234");
-        np.login();
+        np.openHomePage().openLoginPage();
+        np.performLogin("testtesttest@gmail.com","Test1234");
         np.openManageFoldersDialog();
-        np.setFolderName("June");
-        np.saveFolder();
+        np.createFolder("June");
         np.closeManageFoldersDialog();
-
+        np.verifyIsCreatedFolderPresent("June");
     }
 
     @After
