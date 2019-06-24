@@ -29,9 +29,10 @@ public class NotePadChromeTests
         np.openHomePage().openLoginPage();
         np.performLogin("testtesttest@gmail.com","Test1234");
         np.openManageFoldersDialog();
-        np.createFolder("June");
+        String folderName = "Hamster";
+        np.createFolder(folderName);
         np.closeManageFoldersDialog();
-        np.verifyIsCreatedFolderPresent("June");
+        np.verifyIsCreatedFolderPresent(folderName);
     }
 
     @After

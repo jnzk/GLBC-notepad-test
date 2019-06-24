@@ -1,15 +1,43 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.5"
+    }
 }
+
+apply plugin: 'java'
+apply plugin: 'io.qameta.allure'
+
+repositories {
+    mavenCentral()
+}
+
+allure {
+    autoconfigure = true
+    version = '2.6.0'
+
+    useJUnit4 {
+        version = '2.6.0'
+    }
+
+}
+
+test {
+    useJUnit()
+}
+
+//plugins {
+//    id 'java'
+//}
 
 group 'com.glbc'
 version '0.0.1'
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+
 
 dependencies {
     compile group: 'junit', name: 'junit', version: '4.12'

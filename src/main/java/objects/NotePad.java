@@ -1,5 +1,6 @@
 package objects;
 
+import io.qameta.allure.Step;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,19 +11,18 @@ import java.util.List;
 
 public class NotePad
 {
-    private static final By registerLoginButton = By.xpath("//*[@id=\"bs-example-navbar-collapse-1\"]/div/ul/li[4]/a/span");
+    private static final By registerLoginButton = By.cssSelector("a[href='/create_account'] > span");
     private static final By loginEmailField = By.id("loginEmail");
-    private static final By loginPasswordField = By.xpath("//*[@id=\"password\"]");
-    private static final By loginButton = By.xpath("//*[@id=\"submit\"]");
-    private static final By mySavedNotesBlock = By.xpath("/html/body/div[2]/div/div[3]/div[2]/div[1]");
-    private static final By manageFoldersButton = By.xpath("//*[@id=\"folderOption\"]/li/a");
-    private static final By folderNameField = By.xpath("//*[@id=\"newFolder\"]");
-    private static final By CreateNewFolderButton = By.xpath("//*[@id=\"manageFolderContent\"]/div[1]/div[2]/input");
-    private static final By closeManageFoldersButton = By.xpath("//*[@id=\"manageFolderModal\"]/div/div/div[3]/button");
-    private static final By newFolderSelector = By.cssSelector(".droppable");
+    private static final By loginPasswordField = By.cssSelector("input[placeholder='Enter Password']");
+    private static final By loginButton = By.xpath("//button[contains(text(), 'Login')]");
+    private static final By manageFoldersButton = By.xpath("//a[contains(text(), 'Manage Folders')]");
+    private static final By folderNameField = By.id("newFolder");
+    private static final By CreateNewFolderButton = By.cssSelector("input[value='Create New']");
+    private static final By closeManageFoldersButton = By.cssSelector("#manageFolderModal > div > div > div.modal-footer > button");
 
     private WebDriver driver;
     private WebDriverWait wait;
+
 
     public NotePad (WebDriver driver)
     {
@@ -30,33 +30,37 @@ public class NotePad
         this.wait = new WebDriverWait(this.driver, 5);
     }
 
+    @Step
     public NotePad openHomePage ()
         {
             driver.get("https://anotepad.com/");
             return this;
         }
 
+    @Step
     public NotePad openLoginPage ()
     {
         (wait.until(ExpectedConditions.visibilityOfElementLocated(registerLoginButton))).click();
         return this;
     }
 
+    @Step
     public NotePad performLogin (String login, String password)
     {
         driver.findElement(loginEmailField).sendKeys(login);
-        driver.findElements(loginPasswordField).get(1).sendKeys(password);
-        driver.findElements(loginButton).get(1).click();
+        driver.findElement(loginPasswordField).sendKeys(password);
+        driver.findElement(loginButton).click();
         return this;
     }
 
+    @Step
     public NotePad openManageFoldersDialog()
     {
-        wait.until(ExpectedConditions.textToBe(mySavedNotesBlock, "My Saved Notes"));
-        driver.findElement(manageFoldersButton).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(manageFoldersButton)).click();
         return this;
     }
 
+    @Step
     public NotePad createFolder(String folderName)
     {
         wait.until(ExpectedConditions.visibilityOfElementLocated(folderNameField)).sendKeys(folderName);
@@ -64,32 +68,21 @@ public class NotePad
         return this;
     }
 
+    @Step
     public NotePad closeManageFoldersDialog ()
     {
         driver.findElement(closeManageFoldersButton).click();
         return this;
     }
 
+    @Step
     public NotePad verifyIsCreatedFolderPresent (String folderName)
     {
-        List<WebElement> folders = driver.findElements(newFolderSelector);
-        while(folders.size() > 1){
-            sleep(100);
-            folders = driver.findElements(newFolderSelector);
-        }
+        By newFolderSelector = By.xpath("//a[contains(text(), '" + folderName + "')]");
+        WebElement newFolder = wait.until(ExpectedConditions.visibilityOfElementLocated(newFolderSelector));
 
-        WebElement newFolder = folders.get(1);
         Assert.assertEquals(folderName, newFolder.getText().trim());
-
         return this;
-    }
-
-    public void sleep(long ms){
-        try {
-            Thread.currentThread().sleep(ms );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }
