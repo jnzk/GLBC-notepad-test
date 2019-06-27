@@ -33,6 +33,7 @@ public class NotePadChromeTests
         np.createFolder(folderName);
         np.closeManageFoldersDialog();
         np.verifyIsCreatedFolderPresent(folderName);
+        
     }
 
     @After
