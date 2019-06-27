@@ -21,7 +21,7 @@ public class NotePadChromeTests
         np = new NotePad(driver);
     }
 
-    //Testing the possibility of creating a folder for registered user.
+    //Testing of the possibility of creating a folder for registered user.
 
     @Test
     public void aNotepadInChromeTest()
@@ -33,7 +33,7 @@ public class NotePadChromeTests
         np.createFolder(folderName);
         np.closeManageFoldersDialog();
         np.verifyIsCreatedFolderPresent(folderName);
-        
+
     }
 
     @After
