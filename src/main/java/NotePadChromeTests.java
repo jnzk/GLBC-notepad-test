@@ -21,7 +21,7 @@ public class NotePadChromeTests
         np = new NotePad(driver);
     }
 
-    //Testing of the possibility of creating a folder for registered user.
+    //Testing the possibility of creating a folder for registered user.
 
     @Test
     public void aNotepadInChromeTest()
